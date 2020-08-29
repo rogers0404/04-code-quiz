@@ -14,6 +14,7 @@ var remainTime = document.querySelector(".timer");
 var firstColor = "#252eda";
 var textCnt = "left";
 var secondColor = "#ffffff";
+var thirdColor = "#8f7f7f"
 
 
 
@@ -107,48 +108,61 @@ function initialContent()
    creatButton();
 }
 
+var checkingTimer = function(){
+    var eval = false;
+    if(timer <= 0){
+        timer = 0;
+        eval = true
+        scores = timer;
+    }
+    return eval;
+}
+
 // checking answer and calling for the next question
 var checkAnswer = function(str, x){
 
-    // if index is less than question lenght then calling the showQuestion for the next question 
-    if(index < questions.length)
+    // if index is less than question lenght then calling the showQuestion() for the next question 
+    if(x < questions.length)
     {
-        var showAnswer ="";
+        var showAnswer = "";
 
         if (str === questions[x].answer){
-            scores = timer;  // store the time value as a score in the scores variable
-            showAnswer = "Correct!";    
+            if(!checkingTimer()){
+                showAnswer = "Correct!";   
+                console.log("I'm in checkAnswer(); Timer: "+ timer + "\nQuestion #" + x + " Answer: " + showAnswer); 
+            }
         }
         else{
-            if(timer<0){
-               timer = 0;
-            }
-            else{
-                timer-=10; // subtract 10 seconds for the timer
-
-                /* this code it was left due to test the timer vs wrong answers
-                console.log("I'm in checkAnswer(); Timer: "+ timer); */
-            }          
-            showAnswer = "Wrong!";
+                if(!checkingTimer()){
+                    timer-=10; // subtract 10 seconds for the timer                    
+                }       
+                showAnswer = "Wrong!";
+                console.log("I'm in checkAnswer(); Timer: "+ timer + "\nQuestion #" + x + " Answer: " + showAnswer); 
+                
         }
 
         //eliminating the precedent question
         var elementNode = document.querySelector("#question-id");
         deleteChildNode(elementNode);
+        //deleteChildNode(answer);
 
     
         index = showQuestion(index);
         answer.textContent = showAnswer;
+        if(!checkingTimer()){
+            scores = timer;   //store the time value as a score in the scores variable                 
+        }
+        
     }
     else{
 
         // call deletechilnode
         var elementNode = document.querySelector("#question-id");
-        deleteChildNode(elementNode);
-        
+        deleteChildNode(elementNode);        
         deleteChildNode(answer);
 
         // call the function scoring 
+        showInitialsScore();
     }
     
 };
@@ -183,11 +197,11 @@ var showQuestion = function(x) {
         ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>1. " 
         + questions[x].a + "</div></a>";
 
-        op2.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
+        op2.innerHTML = "<a href='#' onclick=checkAnswer('B'," + x + 
         ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>2. " 
         + questions[x].b + "</div></a>";
 
-        op3.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
+        op3.innerHTML = "<a href='#' onclick=checkAnswer('C'," + x + 
         ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>3. " 
         + questions[x].c + "</div></a>";
         
@@ -202,9 +216,12 @@ var showQuestion = function(x) {
 
         // increasing and returning to store it in index variable
         x++;
-        return x;
    }
-    
+   else{
+       //this case is when you reach all question before the time is over
+       showInitialsScore();
+   }
+    return x;
 };
 
 // function to delete element from de DOM to present a new and clean view
@@ -226,8 +243,8 @@ var displayErrorMessage = function(msg){
 var retrieveHighScore = function(){
 
     // getting the scores saved
-    var user = localStorage.getItem("userScore");
-    user = JSON.stringify(user);
+    var user = [];
+    user = JSON.parse(localStorage.getItem("userScore"));
 
     // showing the information in the HTML
     //message for the submit form
@@ -236,16 +253,16 @@ var retrieveHighScore = function(){
     //creating HTML element
     var listOrdered = document.createElement("ol");
     //setting style
-    listOrdered.style.background = "gray";
+    listOrdered.style.background = thirdColor;
 
     //I must check if I save all 
     //container
 
-    console.log("LENGHT OF THE USER LOCALSTORE: "+user.length);
+    console.log(user + "\nLENGHT OF THE USER LOCALSTORE: "+user.length);
 
     for(var i=0; i< user.length; i++){
         var li = document.createElement("li");
-        li.textContent = user[i].user + " - " + user[i].score;
+        li.textContent = JSON.stringify(user[i].user) + " - " + JSON.stringify(user[i].score);
         listOrdered.appendChild(li);
     }
 
@@ -282,9 +299,11 @@ var saveScore = function(){
 
 // function to show the form when the game is over
 var showInitialsScore = function () {
+
+    //scores = timer;
     //message for the submit form
     textQuestion.textContent = "All done!";
-    remainTime.textContent = scores;
+    remainTime.textContent = "Time left :"+ scores;
 
     var msg = document.createElement("p");
     msg.setAttribute("id", "score-id");
@@ -312,7 +331,8 @@ var showInitialsScore = function () {
 //setting the remaining time for the quiz
 var clockTime = function () {
     
-    if(timer === 0 || timer <  0){
+    if(checkingTimer()){
+        //timer = 0;
         clearInterval(interval);
 
         // call deletechilnode for cleaning purposes
@@ -320,19 +340,16 @@ var clockTime = function () {
         if(elementNode != null && answer != null){
             deleteChildNode(elementNode);
             deleteChildNode(answer);
+
         // call initial function ending quiz
-        }
-
         showInitialsScore();
-
-
+        }
     }else{
-        // calling questions array
-        timer--;
-        remainTime.textContent = "Time left :"+ timer;
-
-        /* this code it was left due to test the timer vs wrong answers
-         console.log("I'm in clockTime(); Timer: "+ timer) */
+            if(index < questions.length){
+                // calling questions array
+                timer--;
+                remainTime.textContent = "Time left :"+ timer;
+            }
     }
 };
 
