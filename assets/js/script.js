@@ -161,7 +161,8 @@ var checkAnswer = function(str, x){
         // call deletechilnode
         var elementNode = document.querySelector("#question-id");
         deleteChildNode(elementNode);        
-        deleteChildNode(answer);
+        //deleteChildNode(answer);
+        answer.textContent = "";
 
         // call the function scoring 
         showInitialsScore();
@@ -257,13 +258,13 @@ var retrieveHighScore = function(){
     //message for the submit form
     textQuestion.textContent = "High Scores";
     remainTime.textContent ="";
-    linkScore = "";
- 
-
+    linkScore.textContent = "";
+    answer.textContent ="";
 
     //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
     deleteChildNode(document.querySelector(".p-store"));
     deleteChildNode(document.querySelector(".form-store"));
+    deleteChildNode(document.querySelector("#score-id"));
 
 
     //creating HTML element
@@ -322,6 +323,7 @@ var showInitialsScore = function () {
     //message for the submit form
     textQuestion.textContent = "All done!";
     remainTime.textContent = "Time left :"+ scores;
+    //deleteChildNode(answer);
 
     var msg = document.createElement("p");
     msg.setAttribute("id", "score-id");
@@ -334,16 +336,13 @@ var showInitialsScore = function () {
     span.innerHTML = "<p class='p-store' style ='text-align:left'> Enter Initials: </p>" +
                         "<form class='form-store'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
                         "<button id='save' type='submit' onclick='saveScore()'>Submit</button></form>";
-                                            //in the form button i add onclick attribute 
+                                            // IMPORTANT 
+                                            //in the form button I add onclick attribute instead adding listener
     
 
     // adding to container
     container.appendChild(msg);
     container.appendChild(span);
-
-    //adding listener for storing variables in localStore
-
-    //container.addEventListener("click", saveScore);
 };
 
 //setting the remaining time for the quiz
@@ -357,7 +356,8 @@ var clockTime = function () {
         var elementNode = document.querySelector("#question-id");
         if(elementNode != null && answer != null){
             deleteChildNode(elementNode);
-            deleteChildNode(answer);
+            //deleteChildNode(answer);
+            answer.textContent ="";
 
         // call initial function ending quiz
         showInitialsScore();
