@@ -153,53 +153,58 @@ var checkAnswer = function(str, x){
     
 };
 
+//Function to show the information of the questions and possible answer
 var showQuestion = function(x) {
    /*  console.log(x); */
-    textQuestion.textContent = questions[x].q;
+   if(x < questions.length)
+   {
+       textQuestion.textContent = questions[x].q;
 
-    //creating the ordered list for the options
-    var listUnOrdered = document.createElement("ul");
-    listUnOrdered.setAttribute("id", "question-id");
-    var op1 = document.createElement("li");
-    var op2 = document.createElement("li");
-    var op3 = document.createElement("li");
+        //creating the ordered list for the options
+        var listUnOrdered = document.createElement("ul");
+        listUnOrdered.setAttribute("id", "question-id");
+        var op1 = document.createElement("li");
+        var op2 = document.createElement("li");
+        var op3 = document.createElement("li");
 
-    //listOrdered.style.background = firstColor;
-    listUnOrdered.style.color = secondColor;
-    listUnOrdered.style.justifyContent = "space-between";
-    listUnOrdered.style.listStyle = "none";
-    op1.style.background =  firstColor;
-    op1.style.justifyContent = textCnt;
-    op2.style.background =  firstColor;
-    op2.style.justifyContent = textCnt;
-    op3.style.background =  firstColor;
-    op3.style.justifyContent = textCnt;
+        //listOrdered.style.background = firstColor;
+        listUnOrdered.style.color = secondColor;
+        listUnOrdered.style.justifyContent = "space-between";
+        listUnOrdered.style.listStyle = "none";
+        op1.style.background =  firstColor;
+        op1.style.justifyContent = textCnt;
+        op2.style.background =  firstColor;
+        op2.style.justifyContent = textCnt;
+        op3.style.background =  firstColor;
+        op3.style.justifyContent = textCnt;
 
+        
+        op1.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
+        ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>1. " 
+        + questions[x].a + "</div></a>";
+
+        op2.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
+        ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>2. " 
+        + questions[x].b + "</div></a>";
+
+        op3.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
+        ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>3. " 
+        + questions[x].c + "</div></a>";
+        
+        listUnOrdered.appendChild(op1);
+        listUnOrdered.appendChild(op2);
+        listUnOrdered.appendChild(op3);
+        container.appendChild(listUnOrdered);
+
+        //eliminating the inicial button
+        var button = document.querySelector("#start");
+        deleteChildNode(button);
+
+        // increasing and returning to store it in index variable
+        x++;
+        return x;
+   }
     
-    op1.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
-    ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>1. " 
-    + questions[x].a + "</div></a>";
-
-    op2.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
-    ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>2. " 
-     + questions[x].b + "</div></a>";
-
-    op3.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
-    ") style = 'text-decoration: none; color: #ffffff; '><div style = 'text-align: left;'>3. " 
-     + questions[x].c + "</div></a>";
-    
-     listUnOrdered.appendChild(op1);
-     listUnOrdered.appendChild(op2);
-     listUnOrdered.appendChild(op3);
-    container.appendChild(listUnOrdered);
-
-    //eliminating the inicial button
-    var button = document.querySelector("#start");
-    deleteChildNode(button);
-
-    // increasing and returning to store it in index variable
-    x++;
-    return x;
 };
 
 // function to delete element from de DOM to present a new and clean view
@@ -211,11 +216,69 @@ var deleteChildNode = function(elementNode){
     }
 };
 
+//showing a error message
+
+var displayErrorMessage = function(msg){
+    alert(msg);
+}
+
+// retrieving the High scores
+var retrieveHighScore = function(){
+
+    // getting the scores saved
+    var user = localStorage.getItem("userScore");
+    user = JSON.stringify(user);
+
+    // showing the information in the HTML
+    //message for the submit form
+    textQuestion.textContent = "High Scores";
+
+    //creating HTML element
+    var listOrdered = document.createElement("ol");
+    //setting style
+    listOrdered.style.background = "gray";
+
+    //I must check if I save all 
+    //container
+
+    console.log("LENGHT OF THE USER LOCALSTORE: "+user.length);
+
+    for(var i=0; i< user.length; i++){
+        var li = document.createElement("li");
+        li.textContent = user[i].user + " - " + user[i].score;
+        listOrdered.appendChild(li);
+    }
+
+    container.appendChild(listOrdered);
+
+}
+
 //listener to Save and store data inicials
 var saveScore = function(){
 
-    
-}
+    event.preventDefault();
+
+    //getting the input value
+    var input = document.querySelector("#initials").value;
+
+    //validating if the user enter at list a value
+    if (input === "") {
+        displayErrorMessage("You must bring your Initials for your Score");
+    } else {
+        displayErrorMessage( "Registered Your Score Successful");
+        //console.log(user);
+        //Saving data in localStore
+        saveHighScore =[
+            {
+                user: input,
+                score: scores
+            }
+        ];
+
+        localStorage.setItem("userScore",JSON.stringify(saveHighScore));
+        retrieveHighScore();
+    }
+};
 
 // function to show the form when the game is over
 var showInitialsScore = function () {
@@ -232,18 +295,21 @@ var showInitialsScore = function () {
     span.style.display = "flex";
     span.style.flex = "flex-wrap";
     span.innerHTML = "<p style ='text-align:left'> Enter Initials: </p>" +
-                        "<form ><input type='text' name='initials placeholder='Enter initials'/>"+
-                        "<button id='save' type='submit'>Submit</button></form>";
+                        "<form ><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
+                        "<button id='save' type='submit' onclick='saveScore()'>Submit</button></form>";
+                                            //in the form button i add onclick attribute 
     
+
     // adding to container
     container.appendChild(msg);
     container.appendChild(span);
 
     //adding listener for storing variables in localStore
 
-    container.addEventListener("click", saveScore);
+    //container.addEventListener("click", saveScore);
 };
 
+//setting the remaining time for the quiz
 var clockTime = function () {
     
     if(timer === 0 || timer <  0){
@@ -251,9 +317,11 @@ var clockTime = function () {
 
         // call deletechilnode for cleaning purposes
         var elementNode = document.querySelector("#question-id");
-        deleteChildNode(elementNode);
-        deleteChildNode(answer);
+        if(elementNode != null && answer != null){
+            deleteChildNode(elementNode);
+            deleteChildNode(answer);
         // call initial function ending quiz
+        }
 
         showInitialsScore();
 
@@ -287,3 +355,5 @@ var startHandler = function(){
 /*********************************** Execution *******************************************/
 
 containerBtn.addEventListener("click", startHandler);
+
+/*****************************************************************************************/
