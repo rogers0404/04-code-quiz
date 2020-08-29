@@ -202,13 +202,22 @@ var showQuestion = function(x) {
     return x;
 };
 
+// function to delete element from de DOM to present a new and clean view
 var deleteChildNode = function(elementNode){
+
     //checking if selected element exits
     if(elementNode){
         elementNode.parentNode.removeChild(elementNode);
     }
 };
 
+//listener to Save and store data inicials
+var saveScore = function(){
+
+    
+}
+
+// function to show the form when the game is over
 var showInitialsScore = function () {
     //message for the submit form
     textQuestion.textContent = "All done!";
@@ -233,14 +242,11 @@ var showInitialsScore = function () {
     //adding listener for storing variables in localStore
 
     container.addEventListener("click", saveScore);
-    
-
-    
 };
 
 var clockTime = function () {
     
-    if(timer === 0){
+    if(timer === 0 || timer <  0){
         clearInterval(interval);
 
         // call deletechilnode for cleaning purposes
@@ -262,7 +268,7 @@ var clockTime = function () {
     }
 };
 
-
+// listener to handler the functionality whe the user clicked on button Start
 var startHandler = function(){
    // alert("you have cliked in Start Button");
     container.textContent = "";
