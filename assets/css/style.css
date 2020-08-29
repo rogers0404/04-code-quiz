@@ -1,0 +1,64 @@
+:root {
+    --primary-color: #776868;
+    --secondary-color: #024e76;
+    --tertiary-color: #39a6b2;
+  }
+
+/********************* Header ********************************************/
+header div {
+    padding: 15px 30px; /*changing the size of header padding: 20px 35px;*/
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+}
+
+header div h5 {
+    flex: 1;
+}
+
+header div p span{
+    flex: 2;
+    justify-content: left;
+}
+
+header a {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+
+a {
+    text-decoration: none;
+  }
+
+.textAction ol {
+    background: #252eda;
+    color: #ffffff;
+    justify-content: left;
+    padding: 10px;
+}
+
+
+
+/***********************************************************************/
+
+/************************ Main *****************************************/
+
+main {
+    margin: auto;
+    padding: 15px 30px;
+    justify-content: center;
+    width: 65%;
+}
+
+main div,  main div h1 {
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+}
+
+.answer {
+    font-weight: bold;
+}
+/***********************************************************************/
+
