@@ -4,11 +4,13 @@ var timer = 45 // 120 seconds, 8 questions x 15 seconds = 120
 var interval;
 var index = 0;   // access to the array of questions
 var saveHighScore = [];
+var saveHighScoreObj;
 var containerBtn = document.querySelector(".textAction");
 var container = document.querySelector(".container");
 var textQuestion = document.querySelector(".textCenter")
 var answer = document.querySelector(".answer");
 var remainTime = document.querySelector(".timer");
+var linkScore = document.querySelector(".score");
 
 
 var firstColor = "#252eda";
@@ -239,16 +241,30 @@ var displayErrorMessage = function(msg){
     alert(msg);
 }
 
+var gettingArrayLocalStore = function(){
+    var user = [];
+    user = JSON.parse(localStorage.getItem("userScore"));
+    return user;
+}
+
 // retrieving the High scores
 var retrieveHighScore = function(){
 
     // getting the scores saved
-    var user = [];
-    user = JSON.parse(localStorage.getItem("userScore"));
+    saveHighScore = gettingArrayLocalStore();
 
     // showing the information in the HTML
     //message for the submit form
     textQuestion.textContent = "High Scores";
+    remainTime.textContent ="";
+    linkScore = "";
+ 
+
+
+    //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
+    deleteChildNode(document.querySelector(".p-store"));
+    deleteChildNode(document.querySelector(".form-store"));
+
 
     //creating HTML element
     var listOrdered = document.createElement("ol");
@@ -258,11 +274,12 @@ var retrieveHighScore = function(){
     //I must check if I save all 
     //container
 
-    console.log(user + "\nLENGHT OF THE USER LOCALSTORE: "+user.length);
+    console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
 
-    for(var i=0; i< user.length; i++){
+    for(var i=0; i< saveHighScore.length; i++){
         var li = document.createElement("li");
-        li.textContent = JSON.stringify(user[i].user) + " - " + JSON.stringify(user[i].score);
+        li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
+        li.style.textAlign = textCnt;
         listOrdered.appendChild(li);
     }
 
@@ -284,14 +301,15 @@ var saveScore = function(){
     } else {
         displayErrorMessage( "Registered Your Score Successful");
         //console.log(user);
-        //Saving data in localStore
-        saveHighScore =[
-            {
+        
+        saveHighScore = gettingArrayLocalStore();
+
+        saveHighScoreObj ={
                 user: input,
                 score: scores
-            }
-        ];
-
+            };
+        saveHighScore.push(saveHighScoreObj);
+        //Saving data in localStore
         localStorage.setItem("userScore",JSON.stringify(saveHighScore));
         retrieveHighScore();
     }
@@ -313,8 +331,8 @@ var showInitialsScore = function () {
     span.setAttribute("id", "form-id");
     span.style.display = "flex";
     span.style.flex = "flex-wrap";
-    span.innerHTML = "<p style ='text-align:left'> Enter Initials: </p>" +
-                        "<form ><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
+    span.innerHTML = "<p class='p-store' style ='text-align:left'> Enter Initials: </p>" +
+                        "<form class='form-store'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
                         "<button id='save' type='submit' onclick='saveScore()'>Submit</button></form>";
                                             //in the form button i add onclick attribute 
     
