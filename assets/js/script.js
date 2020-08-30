@@ -362,6 +362,12 @@ var saveScore = function(){
 
         saveHighScore = gettingArrayLocalStore();
 
+        //checking if the array is empty
+        if(saveHighScore == null)
+        {
+            saveHighScore = [];
+        }
+
         saveHighScoreObj ={
                 user: input,
                 score: scores
