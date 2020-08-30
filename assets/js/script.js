@@ -23,13 +23,15 @@ var thirdColor = "#8f7f7f"
 
 initialContent();
 
+// Questions taken from test modules and the mock up examples. 8 questions in total
+
 var questions = [
     //Question #1
     {
         q : "True or False: DOM is built into a Javascript language",
         a : "True",
         b : "False",
-        C : "ZZZZ",
+        C : "None of Above",
         answer: "A"
     },
 
@@ -53,42 +55,47 @@ var questions = [
 
     //Question #4
     {
-        q : "True or False: DOM is built into a Javascript language",
-        a : "True",
-        b : "False",
-        answer: "A"
+        q : "String values must be enclosed within ___________ when being assigned to variables",
+        a : "Coma",
+        b : "Curly Brackets",
+        c : "Parenthesis",
+        answer: "B"
     },
 
     //Question #5
     {
-        q : "True or False: DOM is built into a Javascript language",
-        a : "True",
-        b : "False",
-        answer: "B"
+        q : "The condition in an if / else statement is enclosed with _____________",
+        a : "Curly Brackets",
+        b : "Quotes",
+        c : "Square Brackets",
+        answer: "A"
     },
 
     //Question #6
     {
-        q : "True or False: DOM is built into a Javascript language",
-        a : "True",
-        b : "False",
+        q : "A very useful tools used during development and debbuging for printing content to the debugger is __________",
+        a : "Javascript",
+        b : "Termanl/Bash",
+        c : "for loops",
         answer: "C"
     },
 
     //Question #7
     {
-        q : "True or False: DOM is built into a Javascript language",
-        a : "True",
-        b : "False",
-        answer: "C"
+        q : "Commonly used data type Do NOT include: ",
+        a : "Strings",
+        b : "Booleans",
+        c : "alerts",
+        answer: "B"
     },
 
     //Question #8
     {
-        q : "True or False: DOM is built into a Javascript language",
-        a : "True",
-        b : "False",
-        answer: "A"
+        q : "What does event.preventDefault() do?",
+        a : "It stops the browser from allowing the page upon a form submission",
+        b : "It stops the browser from reloading the form submission event to occur",
+        c : "All of them",
+        answer: "B"
     }
 
 ];
@@ -121,6 +128,7 @@ function initialContent()
 
 }
 
+//checking function for timer variables whether it reach 0 seconds
 var checkingTimer = function(){
     var eval = false;
     if(timer <= 0){
@@ -142,7 +150,6 @@ var checkAnswer = function(str, x){
             if(!checkingTimer()){
                 showAnswer = "Correct!"; 
                 scores+=10;
-                console.log("I'm in checkAnswer(); Timer: "+ timer + "\nQuestion #" + x + " Answer: " + showAnswer); 
             }
         }
         else{
@@ -150,7 +157,6 @@ var checkAnswer = function(str, x){
                     timer-=10; // subtract 10 seconds for the timer                    
                 }       
                 showAnswer = "Wrong!";
-                console.log("I'm in checkAnswer(); Timer: "+ timer + "\nQuestion #" + x + " Answer: " + showAnswer); 
                 
         }
 
@@ -160,10 +166,8 @@ var checkAnswer = function(str, x){
     
         index = showQuestion(index);
         answer.textContent = showAnswer;
-        
     }
     else{
-
         // call deletechilnode
         var elementNode = document.querySelector("#question-id");
         deleteChildNode(elementNode);        
@@ -176,7 +180,7 @@ var checkAnswer = function(str, x){
     
 };
 
-//Function to show the information of the questions and possible answer
+//Function to show the information of the questions and possible answers
 var showQuestion = function(x) {
    
    if(x < questions.length)
@@ -247,12 +251,12 @@ var deleteChildNode = function(elementNode){
     }
 };
 
-//showing a error message
-
+//showing a error message            ***************************************************
 var displayErrorMessage = function(msg){
     alert(msg);
 };
 
+// Function to retrieve values from key save in localStore 
 var gettingArrayLocalStore = function(){
     var user = [];
     user = JSON.parse(localStorage.getItem("userScore"));
@@ -275,12 +279,11 @@ var retrieveHighScore = function(){
     //message for the submit form
     textQuestion.textContent = "High Scores";
     remainTime.textContent ="";
-    alert("ya pase el remaining time-- " + remainTime.textContent + "   ---");
     linkScore.textContent = "";
     answer.textContent ="";
 
         //there are two option in order to call retrieveHighScore() method
-        //1. if it was clicked on link "view High Score" in the a tag top-left of the screen
+        //1. if it was clicked on link "view High Score" in the "A" tag top-left of the screen
         //2. when it was submitted at the end of the quiz. 
         //highOption variable is set 0 
 
@@ -307,19 +310,12 @@ var retrieveHighScore = function(){
         listUnOrdered.style,justifyContent = "space-between";
         listUnOrdered.style.listStyle = "none";
 
-
-        //I must check if I save all 
-        //container
-
-        //console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
-
         // iterating through the array of values in localStore
         for(var i=0; i< saveHighScore.length; i++){
             var li = document.createElement("li");
             li.innerHTML = "<div style = 'text-align: left;'>" + (i+1) + ". " + 
                             JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score) + 
                             "</div>";
-            //li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
             li.style.textAlign = textCnt;
             li.style.background = thirdColor;
             li.style.borderBottom = "10px";
@@ -358,7 +354,6 @@ var saveScore = function(){
         displayErrorMessage("You must bring your Initials for your Score");
     } else {
         displayErrorMessage( "Registered Your Score Successful");
-        //console.log(user);
 
         saveHighScore = gettingArrayLocalStore();
 
@@ -368,12 +363,14 @@ var saveScore = function(){
             saveHighScore = [];
         }
 
+        // Assigning input and score values to an object
         saveHighScoreObj ={
                 user: input,
                 score: scores
             };
 
         saveHighScore.push(saveHighScoreObj);
+
         //Saving data in localStore
         localStorage.setItem("userScore",JSON.stringify(saveHighScore));
         retrieveHighScore();
@@ -388,10 +385,12 @@ var showInitialsScore = function () {
     //message for the submit form
     textQuestion.textContent = "All done!";
     remainTime.textContent = "Time left :"+ finalTime;
-    //deleteChildNode(answer);
+    answer.textContent = "";
 
     var msg = document.createElement("p");
     msg.setAttribute("id", "score-id");
+
+    //note: Based on the total number of right Answer  10 ptos for 1 right answer
     msg.textContent = "Your final Score is: " + scores + " out of "+ (questions.length * 10);
 
     var span = document.createElement("span");
@@ -399,11 +398,11 @@ var showInitialsScore = function () {
     span.style.display = "flex";
     span.style.flex = "flex-wrap";
     span.innerHTML = "<p class='p-store' style ='text-align:left'> Enter Initials: </p>" +
-                        "<form class='form-store'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
-                        "<button id='save' type='submit' onclick='saveScore()' background = '" + firstColor + 
-                        "' color = '" + secondColor +"' border-radius = '10px'>Submit</button></form>";
+                        "<form class='form-store' style='padding:12px'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
+                        "<button id='save' type='submit' onclick='saveScore()' style = 'background:" + firstColor + 
+                        "; color:" + secondColor +"; border-radius:10px'>Submit</button></form>";
                                             // IMPORTANT 
-                                            //in the form button I add onclick attribute instead adding listener
+                                            //in the form button I added onclick attribute instead adding listener
     
 
     // adding to container
