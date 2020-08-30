@@ -251,7 +251,7 @@ var deleteChildNode = function(elementNode){
     }
 };
 
-//showing a error message            ***************************************************
+//showing a message 
 var displayErrorMessage = function(msg){
     alert(msg);
 };
