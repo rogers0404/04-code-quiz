@@ -174,7 +174,7 @@ var checkAnswer = function(str, x){
         //deleteChildNode(answer);
         answer.textContent = "";
 
-        // call the function scoring 
+        // call initial function ending quiz when the timer reaches 0 seconds
         showInitialsScore();
     }
     
@@ -423,7 +423,7 @@ var clockTime = function () {
             //deleteChildNode(answer);
             answer.textContent ="";
 
-        // call initial function ending quiz
+        // call initial function ending quiz when the timer reaches 0 seconds
         showInitialsScore();
         }
     }else{
@@ -437,7 +437,6 @@ var clockTime = function () {
 
 // listener to handler the functionality whe the user clicked on button Start
 var startHandler = function(){
-   // alert("you have cliked in Start Button");
     container.textContent = "";
     highOption = 1; //when the quiz starts
     
@@ -448,7 +447,6 @@ var startHandler = function(){
     index = showQuestion(index);
     
 };
-
 
 /*****************************************************************************************/
 
