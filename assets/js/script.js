@@ -19,8 +19,6 @@ var textCnt = "left";
 var secondColor = "#ffffff";
 var thirdColor = "#8f7f7f"
 
-
-
 initialContent();
 
 // Questions taken from test modules and the mock up examples. 8 questions in total
@@ -123,8 +121,6 @@ function initialContent()
 
    //setting highOption as a flag
    highOption = 0;
-
-   
 
 }
 
