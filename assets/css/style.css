@@ -51,10 +51,16 @@ main {
     width: 65%;
 }
 
-main div,  main div h1 {
+main div {
     text-align: center;
-    margin: 10px;
-    padding: 10px;
+    margin: 10px auto 0px auto;
+    padding: 5px;
+}
+
+main div h1 {
+    text-align: center;
+    margin: 10px auto 0px auto;
+    padding: 5px;
 }
 
 .answer {

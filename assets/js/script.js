@@ -98,12 +98,12 @@ var questions = [
 /*********************************** Functions *******************************************/
 
 // Creating button for the answer of question
-function creatButton (){
+function creatButton (id, txt){
     var button = document.createElement("button");
-    button.setAttribute("id", "start");
-    button.textContent ="Start Quiz";
+    button.setAttribute("id", id);
+    button.textContent =txt;
     button.style.background = firstColor;
-    button.style.textDecorationColor = secondColor;
+    button.style.color = secondColor;
     button.style.borderRadius = "10px"
     containerBtn.appendChild(button);
 }
@@ -111,15 +111,14 @@ function creatButton (){
 // creating a button for the first time in container Div class name textAction
 function initialContent()
 {
-   //creating the "Start Button"
-   creatButton();
+   //creating the "Start Button" id value id = start, and content text 
+   creatButton("start", "Start Quiz");
 
    //setting highOption as a flag
    highOption = 0;
 
-   //Setting attributes to link for High Scores
-  /*  linkScore.setAttribute("id", "link-id");
-   linkScore.setAttribute("onclick", "retrieveHighScore()"); */
+   
+
 }
 
 var checkingTimer = function(){
@@ -127,10 +126,9 @@ var checkingTimer = function(){
     if(timer <= 0){
         timer = 0;
         eval = true
-        scores = timer;
     }
     return eval;
-}
+};
 
 // checking answer and calling for the next question
 var checkAnswer = function(str, x){
@@ -142,7 +140,8 @@ var checkAnswer = function(str, x){
 
         if (str === questions[x].answer){
             if(!checkingTimer()){
-                showAnswer = "Correct!";   
+                showAnswer = "Correct!"; 
+                scores+=10;
                 console.log("I'm in checkAnswer(); Timer: "+ timer + "\nQuestion #" + x + " Answer: " + showAnswer); 
             }
         }
@@ -158,14 +157,9 @@ var checkAnswer = function(str, x){
         //eliminating the precedent question
         var elementNode = document.querySelector("#question-id");
         deleteChildNode(elementNode);
-        //deleteChildNode(answer);
-
     
         index = showQuestion(index);
         answer.textContent = showAnswer;
-        if(!checkingTimer()){
-            scores = timer;   //store the time value as a score in the scores variable                 
-        }
         
     }
     else{
@@ -184,7 +178,7 @@ var checkAnswer = function(str, x){
 
 //Function to show the information of the questions and possible answer
 var showQuestion = function(x) {
-   /*  console.log(x); */
+   
    if(x < questions.length)
    {
        textQuestion.textContent = questions[x].q;
@@ -228,9 +222,11 @@ var showQuestion = function(x) {
         listUnOrdered.appendChild(op3);
         container.appendChild(listUnOrdered);
 
-        //eliminating the inicial button
+        //eliminating the inicial button and other possible buttons
         var button = document.querySelector("#start");
         deleteChildNode(button);
+        deleteChildNode(document.querySelector("#go-back"));
+        deleteChildNode(document.querySelector("#clear"));
 
         // increasing and returning to store it in index variable
         x++;
@@ -255,77 +251,99 @@ var deleteChildNode = function(elementNode){
 
 var displayErrorMessage = function(msg){
     alert(msg);
-}
+};
 
 var gettingArrayLocalStore = function(){
     var user = [];
     user = JSON.parse(localStorage.getItem("userScore"));
     return user;
-}
+};
+
+//clear localStore
+var clearLocalStore = function(){
+    localStorage.clear();
+};
 
 // retrieving the High scores
 var retrieveHighScore = function(){
 
     // getting the scores saved
     saveHighScore = gettingArrayLocalStore();
+    timer = 0;
 
     // showing the information in the HTML
     //message for the submit form
     textQuestion.textContent = "High Scores";
     remainTime.textContent ="";
+    alert("ya pase el remaining time-- " + remainTime.textContent + "   ---");
     linkScore.textContent = "";
     answer.textContent ="";
 
-    //there are two option in order to call retrieveHighScore() method
-    //1. if it was clicked on link "view High Score" in the a tag top-left of the screen
-    //2. when it was submitted at the end of the quiz. 
-    //highOption variable is set 0 
+        //there are two option in order to call retrieveHighScore() method
+        //1. if it was clicked on link "view High Score" in the a tag top-left of the screen
+        //2. when it was submitted at the end of the quiz. 
+        //highOption variable is set 0 
 
-    if(!highOption){
-        container.textContent = "";
-        deleteChildNode(document.querySelector("#start"));
-    }
-    else{
-         //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
-        deleteChildNode(document.querySelector(".p-store"));
-        deleteChildNode(document.querySelector(".form-store"));
-        deleteChildNode(document.querySelector("#score-id"));
-    }
-   
+        if(!highOption){
+            container.textContent = "";
+            deleteChildNode(document.querySelector("#start"));
+        }
+        else{
+            //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
+            deleteChildNode(document.querySelector(".p-store"));
+            deleteChildNode(document.querySelector(".form-store"));
+            deleteChildNode(document.querySelector("#score-id"));
+        }
     
-    //creating HTML element
-    var listUnOrdered = document.createElement("ul");
-    //setting style
-    listUnOrdered.style.background = secondColor;
-    listUnOrdered.style,justifyContent = "space-between";
-    listUnOrdered.style.listStyle = "none";
+    //cheking if there is some key stored in localStore
+    
+    if(saveHighScore != null)
+    {   
+        //creating HTML element
+        console.log(saveHighScore.length);
+        var listUnOrdered = document.createElement("ul");
+        //setting style
+        listUnOrdered.style.background = secondColor;
+        listUnOrdered.style,justifyContent = "space-between";
+        listUnOrdered.style.listStyle = "none";
 
 
-    //I must check if I save all 
-    //container
+        //I must check if I save all 
+        //container
 
-    //console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
+        //console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
 
-    // iterating through the array of values in localStore
-    for(var i=0; i< saveHighScore.length; i++){
-        var li = document.createElement("li");
-        li.innerHTML = "<div style = 'text-align: left;'>" + (i+1) + ". " + 
-                        JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score) + 
-                        "</div>";
-        //li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
-        li.style.textAlign = textCnt;
-        li.style.background = thirdColor;
-        li.style.borderBottom = "10px";
-        listUnOrdered.appendChild(li);
+        // iterating through the array of values in localStore
+        for(var i=0; i< saveHighScore.length; i++){
+            var li = document.createElement("li");
+            li.innerHTML = "<div style = 'text-align: left;'>" + (i+1) + ". " + 
+                            JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score) + 
+                            "</div>";
+            //li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
+            li.style.textAlign = textCnt;
+            li.style.background = thirdColor;
+            li.style.borderBottom = "10px";
+            listUnOrdered.appendChild(li);
+        }
+
+        container.appendChild(listUnOrdered);
+
     }
-
-    container.appendChild(listUnOrdered);
 
     // creating button for "Go Back" and "Clear Local Store"
+    creatButton("go-back", "Go Back"); 
+    creatButton("clear", "Clear High Scores");
+    var btn1 = document.querySelector("#go-back");
+    var btn2 = document.querySelector("#clear");
+    btn1.addEventListener("click", function() {
+        location.reload();                                  // reload index.html
+    });
+    btn2.addEventListener("click", function() {
+        clearLocalStore();                                  // clear from storage all key stored
+    });
 
-
-
-}
+    deleteChildNode(document.querySelector("#question-id"));
+};
 
 //listener to Save and store data inicials
 var saveScore = function(){
@@ -341,13 +359,14 @@ var saveScore = function(){
     } else {
         displayErrorMessage( "Registered Your Score Successful");
         //console.log(user);
-        
+
         saveHighScore = gettingArrayLocalStore();
 
         saveHighScoreObj ={
                 user: input,
                 score: scores
             };
+
         saveHighScore.push(saveHighScoreObj);
         //Saving data in localStore
         localStorage.setItem("userScore",JSON.stringify(saveHighScore));
@@ -358,15 +377,16 @@ var saveScore = function(){
 // function to show the form when the game is over
 var showInitialsScore = function () {
 
-    //scores = timer;
+
+    var finalTime = timer;
     //message for the submit form
     textQuestion.textContent = "All done!";
-    remainTime.textContent = "Time left :"+ scores;
+    remainTime.textContent = "Time left :"+ finalTime;
     //deleteChildNode(answer);
 
     var msg = document.createElement("p");
     msg.setAttribute("id", "score-id");
-    msg.textContent = "Your final Score is: " + scores;
+    msg.textContent = "Your final Score is: " + scores + " out of "+ (questions.length * 10);
 
     var span = document.createElement("span");
     span.setAttribute("id", "form-id");
@@ -374,7 +394,8 @@ var showInitialsScore = function () {
     span.style.flex = "flex-wrap";
     span.innerHTML = "<p class='p-store' style ='text-align:left'> Enter Initials: </p>" +
                         "<form class='form-store'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
-                        "<button id='save' type='submit' onclick='saveScore()'>Submit</button></form>";
+                        "<button id='save' type='submit' onclick='saveScore()' background = '" + firstColor + 
+                        "' color = '" + secondColor +"' border-radius = '10px'>Submit</button></form>";
                                             // IMPORTANT 
                                             //in the form button I add onclick attribute instead adding listener
     
@@ -429,7 +450,8 @@ var startHandler = function(){
 
 /*********************************** Execution *******************************************/
 
-containerBtn.addEventListener("click", startHandler);
+var button = document.querySelector("#start");
+button.addEventListener("click", startHandler);
 linkScore.addEventListener("click", retrieveHighScore);
 
 /*****************************************************************************************/
