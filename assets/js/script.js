@@ -1,8 +1,9 @@
 /*********************************** Variables *******************************************/
-var scores = 0;
-var timer = 45 // 120 seconds, 8 questions x 15 seconds = 120
+var scores = 0;         //Based on the total number of right Answer  10 ptos for 1 right answer
+var timer = 45          // 120 seconds, 8 questions x 15 seconds = 120
 var interval;
-var index = 0;   // access to the array of questions
+var index = 0;          // access to the array of questions
+var highOption;     
 var saveHighScore = [];
 var saveHighScoreObj;
 var containerBtn = document.querySelector(".textAction");
@@ -10,7 +11,7 @@ var container = document.querySelector(".container");
 var textQuestion = document.querySelector(".textCenter")
 var answer = document.querySelector(".answer");
 var remainTime = document.querySelector(".timer");
-var linkScore = document.querySelector(".score");
+var linkScore = document.querySelector(".a-score");
 
 
 var firstColor = "#252eda";
@@ -101,13 +102,24 @@ function creatButton (){
     var button = document.createElement("button");
     button.setAttribute("id", "start");
     button.textContent ="Start Quiz";
+    button.style.background = firstColor;
+    button.style.textDecorationColor = secondColor;
+    button.style.borderRadius = "10px"
     containerBtn.appendChild(button);
 }
 
 // creating a button for the first time in container Div class name textAction
 function initialContent()
 {
+   //creating the "Start Button"
    creatButton();
+
+   //setting highOption as a flag
+   highOption = 0;
+
+   //Setting attributes to link for High Scores
+  /*  linkScore.setAttribute("id", "link-id");
+   linkScore.setAttribute("onclick", "retrieveHighScore()"); */
 }
 
 var checkingTimer = function(){
@@ -184,16 +196,19 @@ var showQuestion = function(x) {
         var op2 = document.createElement("li");
         var op3 = document.createElement("li");
 
-        //listOrdered.style.background = firstColor;
+        //Styling the answer in each cuestion
         listUnOrdered.style.color = secondColor;
         listUnOrdered.style.justifyContent = "space-between";
         listUnOrdered.style.listStyle = "none";
         op1.style.background =  firstColor;
         op1.style.justifyContent = textCnt;
+        op1.style.borderRadius = "10px";
         op2.style.background =  firstColor;
         op2.style.justifyContent = textCnt;
+        op2.style.borderRadius = "10px";
         op3.style.background =  firstColor;
         op3.style.justifyContent = textCnt;
+        op3.style.borderRadius = "10px";
 
         
         op1.innerHTML = "<a href='#' onclick=checkAnswer('A'," + x + 
@@ -261,30 +276,54 @@ var retrieveHighScore = function(){
     linkScore.textContent = "";
     answer.textContent ="";
 
-    //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
-    deleteChildNode(document.querySelector(".p-store"));
-    deleteChildNode(document.querySelector(".form-store"));
-    deleteChildNode(document.querySelector("#score-id"));
+    //there are two option in order to call retrieveHighScore() method
+    //1. if it was clicked on link "view High Score" in the a tag top-left of the screen
+    //2. when it was submitted at the end of the quiz. 
+    //highOption variable is set 0 
 
-
+    if(!highOption){
+        container.textContent = "";
+        deleteChildNode(document.querySelector("#start"));
+    }
+    else{
+         //eliminating nodeElements from class container before create in high score HTML in showInitialScore()
+        deleteChildNode(document.querySelector(".p-store"));
+        deleteChildNode(document.querySelector(".form-store"));
+        deleteChildNode(document.querySelector("#score-id"));
+    }
+   
+    
     //creating HTML element
-    var listOrdered = document.createElement("ol");
+    var listUnOrdered = document.createElement("ul");
     //setting style
-    listOrdered.style.background = thirdColor;
+    listUnOrdered.style.background = secondColor;
+    listUnOrdered.style,justifyContent = "space-between";
+    listUnOrdered.style.listStyle = "none";
+
 
     //I must check if I save all 
     //container
 
-    console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
+    //console.log(saveHighScore + "\nLENGHT OF THE USER LOCALSTORE: "+saveHighScore.length);
 
+    // iterating through the array of values in localStore
     for(var i=0; i< saveHighScore.length; i++){
         var li = document.createElement("li");
-        li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
+        li.innerHTML = "<div style = 'text-align: left;'>" + (i+1) + ". " + 
+                        JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score) + 
+                        "</div>";
+        //li.textContent = JSON.stringify(saveHighScore[i].user) + " - " + JSON.stringify(saveHighScore[i].score);
         li.style.textAlign = textCnt;
-        listOrdered.appendChild(li);
+        li.style.background = thirdColor;
+        li.style.borderBottom = "10px";
+        listUnOrdered.appendChild(li);
     }
 
-    container.appendChild(listOrdered);
+    container.appendChild(listUnOrdered);
+
+    // creating button for "Go Back" and "Clear Local Store"
+
+
 
 }
 
@@ -375,6 +414,7 @@ var clockTime = function () {
 var startHandler = function(){
    // alert("you have cliked in Start Button");
     container.textContent = "";
+    highOption = 1; //when the quiz starts
     
     // Setting the interval... calling the function
     interval = setInterval(clockTime,1000);
@@ -390,5 +430,6 @@ var startHandler = function(){
 /*********************************** Execution *******************************************/
 
 containerBtn.addEventListener("click", startHandler);
+linkScore.addEventListener("click", retrieveHighScore);
 
 /*****************************************************************************************/
