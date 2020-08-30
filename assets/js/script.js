@@ -380,8 +380,6 @@ var saveScore = function(){
 // function to show the form when the game is over
 var showInitialsScore = function () {
 
-
-    var finalTime = timer;
     //message for the submit form
     textQuestion.textContent = "All done!";
     remainTime.textContent = "Time left :"+ timer;
@@ -416,7 +414,6 @@ var showInitialsScore = function () {
 var clockTime = function () {
     
     if(checkingTimer()){
-        //timer = 0;
         clearInterval(interval);
 
         // call deletechilnode for cleaning purposes
