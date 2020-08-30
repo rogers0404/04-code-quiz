@@ -384,7 +384,7 @@ var showInitialsScore = function () {
     var finalTime = timer;
     //message for the submit form
     textQuestion.textContent = "All done!";
-    remainTime.textContent = "Time left :"+ finalTime;
+    remainTime.textContent = "Time left :"+ timer;
     answer.textContent = "";
 
     var msg = document.createElement("p");
@@ -395,7 +395,9 @@ var showInitialsScore = function () {
 
     var span = document.createElement("span");
     span.setAttribute("id", "form-id");
-    span.style.display = "flex";
+    span.style.display = "flex";                    //
+    span.style.flexWrap = "wrap";                   //  Tested and debugged with DevTool in Chrome
+    span.style.justifyContent = "center";           //
     span.style.flex = "flex-wrap";
     span.innerHTML = "<p class='p-store' style ='text-align:left'> Enter Initials: </p>" +
                         "<form class='form-store' style='padding:12px'><input type='text' name='initials placeholder='Enter initials' id='initials'/>"+
