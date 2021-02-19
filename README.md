@@ -1,54 +1,65 @@
-# code-quiz
-4th Challenge
+# Code Quiz
 
-URLs
+## Description 
 
-Deployed Application: 
-    https://rogers0404.github.io/code-quiz/
+A Quiz App based on Javascript, CSS and HTML where you can practice your knowledge.
 
-GitHub Repository:
-    https://github.com/rogers0404/code-quiz.git
-    
-    git@github.com:rogers0404/code-quiz.git 
+## Table of Contents
 
-
-Commits:
-
-Fourth Assignment in UCF Code Boot Camp
-
-1. It was Created 1 branches to work independently from the master branch
-- develop
-
-2. "develop" Branch correspond with a development in the HTML and CSS documents and Javascript
-
-3. Defined varibles for styling: colors,  backgrounds and border-radius; timer; scores, array of object for questions, flagh; elements of DOM.
-
-4. HTML and CSS Basis:
-- As required in the Acceptance Criteria, the links work,
-- It was used felxbox, and psudo clases to Styling ic CSS
-- There are comments in both documents (HTML and CSS)
-
-5. JavaScript file:
-- As required in the Acceptance Criteria.
-- All points in Acceptance Criteria are their comments
-- There are several functions to manage all functionality, like: 
-    * Functions for localStore; 
-    * to show Questions, check answers, get score;
-    * Timer
-    * create buttons
-    * Show score initials form
-    * delete element from DOM
-    * objetc for the score in localStore. It was used JSON to manage its content
-- It was used DOM element manupulation from javascript
-- And also, I was set styling from javascript using DOM
-
-6. It was changed the way to assign score; for each question answer correctly, it was added 10 pts to the variable score.
-
-7. In the GitHub there are all comments generated during the developing of the assignment
+* [URLs](#urls)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Contributing](#Contributing)
+* [License](#license)
+* [Test](#Test)
+* [Questions](#questions)
+* [Screenshots](#screenshots)
 
 
+## URLs
 
-##Screenshots:
+* Deployed Application: 
+    - [https://rogers0404.github.io/04-code-quiz/](https://rogers0404.github.io/04-code-quiz/) (live)
+
+* GitHub Repository:
+    - [HTTPS: https://github.com/rogers0404/04-code-quiz.git](https://github.com/rogers0404/04-code-quiz.git)
+    - [GIT: git@github.com:rogers0404/04-code-quiz.git](git@github.com:rogers0404/Professional-Portfolio.git)
+
+
+## Installation
+
+- `git clone git@github.com:rogers0404/04-code-quiz.git        //clone the repository`
+- `Open index.html in a Browser`
+
+## Usage 
+
+None
+
+## Contributing
+
+* Rogers Ramirez, Github User: [rogers0404](http://github.com/rogers0404)
+
+
+## License
+
+Professional Porfolio with React is licensed under the
+
+![v1](https://img.shields.io/static/v1?label=License&message=None&color=inactive&&style=plastic)
+
+None
+
+## Test
+
+None
+
+## Questions
+
+If you have any questions about the application, you can check the documentation on my GitHub profile [https://github.com/rogers0404](https://github.com/rogers0404).
+
+for more information you can have a question via email [rogers.ramirez2008@gmail.com](rogers.ramirez2008@gmail.com)  .
+
+
+## Screenshots
 
 ### Screenshot 1
 ![](./assets/images/mock-up1.png)
