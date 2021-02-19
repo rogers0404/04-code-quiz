@@ -249,7 +249,7 @@ var deleteChildNode = function(elementNode){
 
 //showing a message 
 var displayErrorMessage = function(msg){
-    alert(msg);
+    alert(msg);  
 };
 
 // Function to retrieve values from key save in localStore 
